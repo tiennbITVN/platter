@@ -20,5 +20,11 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       end
     end
 
+    def setup_git
+      remove_file '.gitignore'
+      copy_file "platter_gitignore", ".gitignore"
+      run "git init"
+    end
+
   end
 end

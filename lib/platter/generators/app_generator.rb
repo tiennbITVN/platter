@@ -23,6 +23,7 @@ module Platter
     def platter
       invoke :custom_gemfile
       invoke :add_api_support
+      invoke :setup_git
     end
 
     def custom_gemfile
@@ -33,6 +34,11 @@ module Platter
 
     def add_api_support
       build :add_api_support if options[:api]
+    end
+
+    def setup_git
+      say "Initializing git"
+      build :setup_git
     end
 
     protected
