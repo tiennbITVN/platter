@@ -15,6 +15,13 @@ module Platter
     end
 
     def platter
+      invoke :custom_gemfile
+    end
+
+    def custom_gemfile
+      build :replace_gemfile
+
+      bundle_command 'install'
     end
 
     protected
