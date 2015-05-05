@@ -26,5 +26,9 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       run "git init"
     end
 
+    def setup_server
+      template "Procfile", "Procfile"
+    end
+
   end
 end
