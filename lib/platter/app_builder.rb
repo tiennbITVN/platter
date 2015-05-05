@@ -45,6 +45,8 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
   # We use mailcatcher to preview emails
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  config.action_mailer.default_url_options = { host: "localhost:#{PORT}" }
+  config.action_mailer.asset_host = "http://localhost:#{PORT}"
         },
           after: "config.action_mailer.raise_delivery_errors = false"
     end
