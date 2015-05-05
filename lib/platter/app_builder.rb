@@ -1,5 +1,6 @@
 module Platter
   class AppBuilder < Rails::AppBuilder
+    PORT = 3000
 
     def readme
       template "README.md.erb", "README.md"
@@ -28,6 +29,11 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
 
     def setup_server
       template "Procfile", "Procfile"
+    end
+
+    def provide_development_setup_bin
+      template "bin_development_setup.rb", "bin/setup", port: PORT, force: true
+      run "chmod a+x bin/setup"
     end
 
   end

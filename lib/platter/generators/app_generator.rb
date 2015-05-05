@@ -3,6 +3,9 @@ require 'rails/generators/rails/app/app_generator'
 
 module Platter
   class AppGenerator < Rails::Generators::AppGenerator
+    class_option :database, type: :string, aliases: "-d", default: "postgresql",
+      desc: "Configure for selected database. PostgreSQL by default."
+
     class_option :skip_test_unit, type: :boolean, aliases: "-T", default: true,
       desc: "Skip Test::Unit files"
 
@@ -22,6 +25,7 @@ module Platter
 
     def platter
       invoke :custom_gemfile
+      invoke :setup_development_environment
       invoke :add_api_support
       invoke :setup_server
       invoke :setup_git
@@ -45,6 +49,11 @@ module Platter
     def setup_server
       say "Setting up the server"
       build :setup_server
+    end
+
+    def setup_development_environment
+      say "Setting up the development environment"
+      build :provide_development_setup_bin
     end
 
     protected
