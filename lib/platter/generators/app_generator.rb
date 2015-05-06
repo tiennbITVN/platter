@@ -56,6 +56,7 @@ module Platter
       build :provide_development_setup_bin
       build :setup_development_mail_delivery_strategy
       build :fix_i18n_deprecation_warning
+      build :provide_generators_configuration
     end
 
     protected
