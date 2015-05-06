@@ -11,6 +11,8 @@ module Platter
       template "Gemfile.erb", "Gemfile"
     end
 
+    #API builds
+    #
     def add_api_support
       inject_into_file "Gemfile", after: "ruby \"#{Platter::RUBY_VERSION}\"" do
         %Q{
@@ -21,12 +23,28 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       end
     end
 
+    def add_api_version_directories
+      empty_directory "app/controllers/api/v1/"
+    end
+
+    def add_api_version_base_controller
+      template "base_api_controller.erb", "app/controllers/api/v1/base_controller.rb"
+    end
+
+    def provide_api_routes
+      template "api_routes.erb", "config/routes.rb", force: true
+    end
+
+    #GIT builds
+    #
     def setup_git
       remove_file '.gitignore'
       copy_file "platter_gitignore", ".gitignore"
       run "git init"
     end
 
+    #Server build
+    #
     def setup_server
       template "Procfile", "Procfile"
     end

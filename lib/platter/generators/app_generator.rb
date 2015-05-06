@@ -26,7 +26,7 @@ module Platter
     def platter
       invoke :custom_gemfile
       invoke :setup_development_environment
-      invoke :add_api_support
+      invoke :add_api_support if option[:api]
       invoke :setup_server
       invoke :setup_git
     end
@@ -38,7 +38,10 @@ module Platter
     end
 
     def add_api_support
-      build :add_api_support if options[:api]
+      build :add_api_support
+      build :add_api_version_directories
+      build :add_api_version_base_controller
+      build :provide_api_routes
     end
 
     def setup_git
