@@ -51,5 +51,11 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
           after: "config.action_mailer.raise_delivery_errors = false"
     end
 
+    def fix_i18n_deprecation_warning
+      inject_into_class 'config/application.rb', 'Application',
+        %Q{
+    config.i18n.enforce_available_locales = true\n}
+    end
+
   end
 end

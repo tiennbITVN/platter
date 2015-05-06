@@ -55,6 +55,7 @@ module Platter
       say "Setting up the development environment"
       build :provide_development_setup_bin
       build :setup_development_mail_delivery_strategy
+      build :fix_i18n_deprecation_warning
     end
 
     protected
