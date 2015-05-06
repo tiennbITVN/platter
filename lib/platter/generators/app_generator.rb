@@ -26,7 +26,8 @@ module Platter
     def platter
       invoke :custom_gemfile
       invoke :setup_development_environment
-      invoke :add_api_support if option[:api]
+      invoke :setup_test_environment
+      invoke :add_api_support
       invoke :setup_server
       invoke :setup_git
     end
@@ -38,10 +39,13 @@ module Platter
     end
 
     def add_api_support
-      build :add_api_support
-      build :add_api_version_directories
-      build :add_api_version_base_controller
-      build :provide_api_routes
+      if options[:api]
+        say "Adding API support"
+        build :add_api_support
+        build :add_api_version_directories
+        build :add_api_version_base_controller
+        build :provide_api_routes
+      end
     end
 
     def setup_git
@@ -60,6 +64,12 @@ module Platter
       build :setup_development_mail_delivery_strategy
       build :fix_i18n_deprecation_warning
       build :provide_generators_configuration
+    end
+
+    def setup_test_environment
+      say "Setting up the test environment"
+      build :init_rspec
+      build :add_support_rspec_files
     end
 
     protected

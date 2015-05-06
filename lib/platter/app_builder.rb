@@ -95,5 +95,17 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
           after: "config.active_record.raise_in_transactional_callbacks = true"
     end
 
+    #TEST builds
+    def init_rspec
+      generate "rspec:install"
+    end
+
+    def add_support_rspec_files
+      empty_directory "spec/support/"
+      template "rspec_support_database_cleaner.erb", "spec/support/database_cleaner.rb"
+      template "rspec_support_factory_girl.erb", "spec/support/factory_girl.rb"
+      template "rspec_support_i18n.erb", "spec/support/i18n.rb"
+    end
+
   end
 end
