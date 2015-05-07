@@ -53,6 +53,7 @@ module Platter
     def setup_git
       say "Initializing git"
       build :setup_git
+      build :provide_first_commit
     end
 
     def setup_server

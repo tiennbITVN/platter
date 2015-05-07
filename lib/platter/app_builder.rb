@@ -40,7 +40,12 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     def setup_git
       remove_file '.gitignore'
       copy_file "platter_gitignore", ".gitignore"
-      run "git init"
+      git :init
+    end
+
+    def provide_first_commit
+      git add: "."
+      git commit: "-m 'Project initialization using Platter'"
     end
 
     #Server build
