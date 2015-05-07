@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.version       = Platter::VERSION
   spec.authors       = ["Icalia Labs"]
   spec.email         = ["kurenn@icalialabs.com"]
-  spec.summary       = %q{A summary}
-  spec.description   = %q{A description}
-  spec.homepage      = ""
+  spec.summary       = %q{ A solution to create custom Rails apps used at @icalialabs }
+  spec.description   = %q{ A solution to create custom Rails apps used at @icalialabs }
+  spec.homepage      = "https://github.com/IcaliaLabs/platter"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
