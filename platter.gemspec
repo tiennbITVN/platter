@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= #{Platter::RUBY_VERSION}"
   spec.name          = "platter"
   spec.version       = Platter::VERSION
-  spec.authors       = ["Icalia Labs"]
+  spec.authors       = ["Icalia Labs", "Abraham Kuri"]
   spec.email         = ["kurenn@icalialabs.com"]
   spec.summary       = %q{ A solution to create custom Rails apps used at @icalialabs }
   spec.description   = %q{ A solution to create custom Rails apps used at @icalialabs }
