@@ -96,6 +96,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     end
 
     #TEST builds
+    #
     def init_rspec
       generate "rspec:install"
     end
@@ -105,6 +106,12 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       template "rspec_support_database_cleaner.erb", "spec/support/database_cleaner.rb"
       template "rspec_support_factory_girl.erb", "spec/support/factory_girl.rb"
       template "rspec_support_i18n.erb", "spec/support/i18n.rb"
+    end
+
+    #STAGING builds
+    #
+    def copy_production_env_to_staging
+      copy_file "config/environments/production.rb", "config/environments/staging.rb"
     end
 
   end

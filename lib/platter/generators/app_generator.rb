@@ -27,6 +27,7 @@ module Platter
       invoke :custom_gemfile
       invoke :setup_development_environment
       invoke :setup_test_environment
+      invoke :setup_staging_environment
       invoke :add_api_support
       invoke :setup_server
       invoke :setup_git
@@ -70,6 +71,11 @@ module Platter
       say "Setting up the test environment"
       build :init_rspec
       build :add_support_rspec_files
+    end
+
+    def setup_staging_environment
+      say "Setting up the staging environment"
+      build :copy_production_env_to_staging
     end
 
     protected
