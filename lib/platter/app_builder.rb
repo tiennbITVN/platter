@@ -78,7 +78,6 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     def provide_generators_configuration
       inject_into_file 'config/application.rb',
         %q{
-
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.test_framework :rspec, fixture: true
@@ -112,6 +111,23 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     #
     def copy_production_env_to_staging
       copy_file "config/environments/production.rb", "config/environments/staging.rb"
+    end
+
+    #ACTIVE JOB builds
+    #
+    def init_delayed_job
+      generate "delayed_job:active_record"
+      run `bundle exec rake db:migrate`
+    end
+
+    def add_delayed_job_active_job_configuration
+      inject_into_file 'config/application.rb',
+        %q{
+
+    # ActiveJob Configuration
+    config.active_job.queue_adapter = :delayed_job
+        },
+          after: "config.active_record.raise_in_transactional_callbacks = true"
     end
 
   end

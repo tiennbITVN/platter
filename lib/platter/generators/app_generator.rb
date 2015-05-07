@@ -28,6 +28,7 @@ module Platter
       invoke :setup_development_environment
       invoke :setup_test_environment
       invoke :setup_staging_environment
+      invoke :add_active_job_configuration
       invoke :add_api_support
       invoke :setup_server
       invoke :setup_git
@@ -76,6 +77,12 @@ module Platter
     def setup_staging_environment
       say "Setting up the staging environment"
       build :copy_production_env_to_staging
+    end
+
+    def add_active_job_configuration
+      say "Setting up ActiveJob with DelayedJob"
+      build :init_delayed_job
+      build :add_delayed_job_active_job_configuration
     end
 
     protected
