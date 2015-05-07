@@ -30,6 +30,7 @@ module Platter
       invoke :setup_staging_environment
       invoke :add_active_job_configuration
       invoke :add_api_support
+      invoke :setup_mailer
       invoke :setup_server
       invoke :setup_git
     end
@@ -84,6 +85,11 @@ module Platter
       say "Setting up ActiveJob with DelayedJob"
       build :init_delayed_job
       build :add_delayed_job_active_job_configuration
+    end
+
+    def setup_mailer
+      say "Setting up Sendgrid configuration"
+      build :init_sendgrid_initialize_file
     end
 
     protected

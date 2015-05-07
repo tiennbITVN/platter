@@ -135,5 +135,11 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
           after: "config.active_record.raise_in_transactional_callbacks = true"
     end
 
+    #MAILER builds
+    #
+    def init_sendgrid_initialize_file
+      template "mailer_initializer_config.erb", "config/initializers/mailer_setup.rb"
+    end
+
   end
 end
