@@ -115,7 +115,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     #STAGING builds
     #
     def copy_production_env_to_staging
-      copy_file "config/environments/production.rb", "config/environments/staging.rb"
+      template "production_env.erb", "config/environments/staging.rb"
     end
 
     #ACTIVE JOB builds
@@ -139,6 +139,24 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     #
     def init_sendgrid_initialize_file
       template "mailer_initializer_config.erb", "config/initializers/mailer_setup.rb"
+    end
+    
+
+    def add_exception_notification_mailer_configuration
+      %w{ production staging }.each do |env|
+        inject_into_file "config/environments/#{env}.rb",
+          %Q{
+
+  #Exception Notification configuration
+  config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[Printoo] ",
+    :sender_address => %{"Staging Exception" <exception@#{app_name.downcase}-#{env}.herokuapp.com>},
+    :exception_recipients => %w{}
+  }
+          },
+            after: "config.active_record.dump_schema_after_migration = false"
+      end
     end
 
   end

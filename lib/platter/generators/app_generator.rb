@@ -90,6 +90,7 @@ module Platter
     def setup_mailer
       say "Setting up Sendgrid configuration"
       build :init_sendgrid_initialize_file
+      build :add_exception_notification_mailer_configuration
     end
 
     protected
