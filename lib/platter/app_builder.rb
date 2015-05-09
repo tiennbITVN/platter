@@ -122,7 +122,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     #
     def init_delayed_job
       generate "delayed_job:active_record"
-      run `bundle exec rake db:migrate`
+      run `bundle exec rake db:create db:migrate`
     end
 
     def add_delayed_job_active_job_configuration
