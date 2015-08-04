@@ -159,5 +159,17 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       end
     end
 
+    def add_smtp_configuration_for_deployment
+      %w{ production staging }.each do |env|
+        inject_into_file "config/environments/#{env}.rb",
+          %Q{
+
+  # STMP configuration
+  config.action_mailer.default_url_options = { :host => ENV['HOST_DEFAULT_URL'], only_path: false }
+  config.action_mailer.delivery_method = :smtp
+          },
+            after: "config.active_record.dump_schema_after_migration = false"
+      end
+    end
   end
 end
