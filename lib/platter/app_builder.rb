@@ -150,7 +150,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
   #Exception Notification configuration
   config.middleware.use ExceptionNotification::Rack,
   :email => {
-    :email_prefix => "[Printoo] ",
+    :email_prefix => "[ProjectName] ",
     :sender_address => %{"Staging Exception" <exception@#{app_name.downcase}-#{env}.herokuapp.com>},
     :exception_recipients => %w{}
   }
