@@ -3,6 +3,18 @@ require 'rails/generators/rails/app/app_generator'
 
 module Platter
   class AppGenerator < Rails::Generators::AppGenerator
+    
+    def initialize(*args)
+      super
+      if @options["api"]
+        backup_options = Marshal.load(Marshal.dump(@options))
+        backup_options["skip_javascript"] = true
+        backup_options["skip_sprockets"] = true
+        backup_options["skip_assets"] = true
+        @options = backup_options
+      end
+    end
+
     class_option :database, type: :string, aliases: "-d", default: "postgresql",
       desc: "Configure for selected database. PostgreSQL by default."
 
