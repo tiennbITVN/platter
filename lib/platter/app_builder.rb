@@ -171,5 +171,18 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
             after: "config.active_record.dump_schema_after_migration = false"
       end
     end
+
+    def app
+      super
+      if options["skip_assets"]
+        remove_dir "app/assets"
+        remove_dir "app/views"
+        remove_dir "app/helpers"
+      end
+    end
+
+    def vendor_stylesheets
+      empty_directory_with_keep_file 'vendor/assets/stylesheets' unless options[:skip_assets]
+    end
   end
 end
