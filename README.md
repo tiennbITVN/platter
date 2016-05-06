@@ -1,3 +1,7 @@
+[![Code Climate](https://codeclimate.com/github/IcaliaLabs/platter/badges/gpa.svg)](https://codeclimate.com/github/IcaliaLabs/platter)
+[![Test Coverage](https://codeclimate.com/github/IcaliaLabs/platter/badges/coverage.svg)](https://codeclimate.com/github/IcaliaLabs/platter/coverage)
+[![Issue Count](https://codeclimate.com/github/IcaliaLabs/platter/badges/issue_count.svg)](https://codeclimate.com/github/IcaliaLabs/platter)
+
 # [Platter](https://github.com/IcaliaLabs/platter)
 
 [![Gem Version](https://badge.fury.io/rb/platter.svg)](http://badge.fury.io/rb/platter)
