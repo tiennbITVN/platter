@@ -3,7 +3,7 @@ require 'rails/generators/rails/app/app_generator'
 
 module Platter
   class AppGenerator < Rails::Generators::AppGenerator
-    
+
     def initialize(*args)
       super
       if @options["api"]
@@ -27,6 +27,9 @@ module Platter
     class_option :api, type: :boolean, default: false,
       desc: "Adds API support gems"
 
+    class_option :skip_docker, type: :boolean, aliases: "-D", default: false,
+      desc: "Skips the docker configuration"
+
     class_option :skip_bundle, type: :boolean, aliases: "-B", default: true,
       desc: "Don't run bundle install"
 
@@ -38,19 +41,17 @@ module Platter
     def platter
       invoke :custom_gemfile
       invoke :setup_development_environment
-      invoke :setup_test_environment
       invoke :setup_staging_environment
-      invoke :add_active_job_configuration
       invoke :add_api_support
       invoke :setup_mailer
       invoke :setup_server
       invoke :setup_git
+      invoke :setup_docker
+      #invoke :setup_test_environment
     end
 
     def custom_gemfile
       build :replace_gemfile
-
-      bundle_command 'install'
     end
 
     def add_api_support
@@ -74,6 +75,13 @@ module Platter
       build :setup_server
     end
 
+    def setup_docker
+      say "Adding docker-compose.yml file"
+      build :setup_docker_compose
+      build :provide_db_script
+      build :provide_dev_entrypoint
+    end
+
     def setup_development_environment
       say "Setting up the development environment"
       build :provide_development_setup_bin
@@ -84,19 +92,13 @@ module Platter
 
     def setup_test_environment
       say "Setting up the test environment"
-      build :init_rspec
+      #build :init_rspec
       build :add_support_rspec_files
     end
 
     def setup_staging_environment
       say "Setting up the staging environment"
       build :copy_production_env_to_staging
-    end
-
-    def add_active_job_configuration
-      say "Setting up ActiveJob with DelayedJob"
-      build :init_delayed_job
-      build :add_delayed_job_active_job_configuration
     end
 
     def setup_mailer

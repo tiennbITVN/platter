@@ -48,6 +48,22 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       git commit: "-m 'Project initialization using Platter'"
     end
 
+    # Docker Build
+    #
+    def setup_docker_compose
+      template "docker-compose.yml.erb", "docker-compose.yml"
+    end
+
+    def provide_dev_entrypoint
+      template "dev-entrypoint.sh", "dev-entrypoint"
+      run "chmod a+x dev-entrypoint"
+    end
+
+    def provide_db_script
+      template "check_or_setup_db.erb", "bin/check_or_setup_db"
+      run "chmod a+x bin/check_or_setup_db"
+    end
+
     #Server build
     #
     def setup_server
@@ -93,7 +109,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       g.javascripts false
       g.helper false
     end
-    
+
     config.autoload_paths += %W(#{config.root}/lib)
         },
           after: "config.active_record.raise_in_transactional_callbacks = true"
@@ -118,29 +134,12 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       template "production_env.erb", "config/environments/staging.rb"
     end
 
-    #ACTIVE JOB builds
-    #
-    def init_delayed_job
-      generate "delayed_job:active_record"
-      run `bundle exec rake db:create db:migrate`
-    end
-
-    def add_delayed_job_active_job_configuration
-      inject_into_file 'config/application.rb',
-        %q{
-
-    # ActiveJob Configuration
-    config.active_job.queue_adapter = :delayed_job
-        },
-          after: "config.active_record.raise_in_transactional_callbacks = true"
-    end
-
     #MAILER builds
     #
     def init_sendgrid_initialize_file
       template "mailer_initializer_config.erb", "config/initializers/mailer_setup.rb"
     end
-    
+
 
     def add_exception_notification_mailer_configuration
       %w{ production staging }.each do |env|
