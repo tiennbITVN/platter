@@ -80,6 +80,7 @@ module Platter
       build :setup_docker_compose
       build :provide_db_script
       build :provide_dev_entrypoint
+      build :provide_attach_script
     end
 
     def setup_development_environment

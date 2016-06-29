@@ -64,6 +64,11 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       run "chmod a+x bin/check_or_setup_db"
     end
 
+    def provide_attach_script
+      template "attach.erb", "bin/attach"
+      run "chmod a+x bin/attach"
+    end
+
     #Server build
     #
     def setup_server
