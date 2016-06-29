@@ -16,6 +16,8 @@ services:
     volumes:
       # We'll store the postgres data in the 'postgres-data' volume we defined:
       - postgres-data:/var/lib/postgresql/data
+      - ./db/dumps:/db/dumps:ro                # Mount the DB dumps folder
+      - ./bin/restoredb:/bin/restoredb:ro      # Mount the 'restoredb' script
     environment:
       POSTGRES_PASSWORD: P4Ssw0rD!
 

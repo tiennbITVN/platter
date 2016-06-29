@@ -81,6 +81,7 @@ module Platter
       build :provide_db_script
       build :provide_dev_entrypoint
       build :provide_attach_script
+      build :provide_restoredb_script
     end
 
     def setup_development_environment

@@ -69,6 +69,13 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       run "chmod a+x bin/attach"
     end
 
+    def provide_restoredb_script
+      empty_directory "db/dumps"
+      create_file "db/dumps/.keep"
+      template "restoredb.erb", "bin/restoredb"
+      run "chmod a+x bin/restoredb"
+    end
+
     #Server build
     #
     def setup_server
