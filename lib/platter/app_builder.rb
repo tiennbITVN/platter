@@ -93,11 +93,6 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
 
     # Development builds
     #
-    def provide_development_setup_bin
-      template "bin_development_setup.rb", "bin/setup", port: PORT, force: true
-      run "chmod a+x bin/setup"
-    end
-
     def setup_development_mail_delivery_strategy
       inject_into_file "config/environments/development.rb",
         %Q{

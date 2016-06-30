@@ -93,7 +93,6 @@ module Platter
 
     def setup_development_environment
       say "Setting up the development environment"
-      build :provide_development_setup_bin
       build :setup_development_mail_delivery_strategy
       build :fix_i18n_deprecation_warning
       build :provide_generators_configuration
