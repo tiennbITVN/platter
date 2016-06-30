@@ -11,6 +11,14 @@ module Platter
       template "Gemfile.erb", "Gemfile"
     end
 
+    def setup_gems
+        run "docker-compose run --rm web bundle"
+    end
+
+    def setup_db
+        run "docker-compose run --rm web rake db:create"
+    end
+
     #API builds
     #
     def add_api_support
@@ -52,6 +60,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     #
     def setup_docker_compose
       template "docker-compose.yml.erb", "docker-compose.yml"
+      create_file "dev.env"
     end
 
     def provide_dev_entrypoint
@@ -130,7 +139,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     #TEST builds
     #
     def init_rspec
-      generate "rspec:install"
+      run "docker-compose run --rm web rspec:install"
     end
 
     def add_support_rspec_files

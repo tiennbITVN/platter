@@ -27,9 +27,6 @@ module Platter
     class_option :api, type: :boolean, default: false,
       desc: "Adds API support gems"
 
-    class_option :skip_docker, type: :boolean, aliases: "-D", default: false,
-      desc: "Skips the docker configuration"
-
     class_option :skip_bundle, type: :boolean, aliases: "-B", default: true,
       desc: "Don't run bundle install"
 
@@ -45,13 +42,23 @@ module Platter
       invoke :add_api_support
       invoke :setup_mailer
       invoke :setup_server
-      invoke :setup_git
       invoke :setup_docker
-      #invoke :setup_test_environment
+      invoke :setup_gems
+      invoke :setup_db
+      invoke :setup_test_environment
+      invoke :setup_git
     end
 
     def custom_gemfile
       build :replace_gemfile
+    end
+
+    def setup_gems
+      build :setup_gems
+    end
+
+    def setup_db
+      build :setup_db
     end
 
     def add_api_support
@@ -94,7 +101,7 @@ module Platter
 
     def setup_test_environment
       say "Setting up the test environment"
-      #build :init_rspec
+      build :init_rspec
       build :add_support_rspec_files
     end
 

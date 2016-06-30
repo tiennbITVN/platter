@@ -28,7 +28,7 @@ services:
     command: rails server -b 0.0.0.0 -p 3000 -P /tmp/rails.pid
     ports:
       - 3000:3000
-    entrypoint: /usr/src/app/dev-entrypoint.sh
+    entrypoint: /usr/src/app/dev-entrypoint
     volumes:
       # Mount our app code directory (".") into our app containers at the
       # "/usr/src/app" folder:
