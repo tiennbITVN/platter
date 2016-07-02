@@ -27,6 +27,9 @@ module Platter
     class_option :api, type: :boolean, default: false,
       desc: "Adds API support gems"
 
+    class_option :skip_bundle, type: :boolean, aliases: "-B", default: true,
+                 desc: "Don't run bundle install"
+
     def finish_template
       invoke :platter
       super
