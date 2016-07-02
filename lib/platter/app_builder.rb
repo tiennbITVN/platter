@@ -11,6 +11,14 @@ module Platter
       template "Gemfile.erb", "Gemfile"
     end
 
+    def setup_gems
+        run "docker-compose run --rm web bundle"
+    end
+
+    def setup_db
+        run "docker-compose run --rm web rake db:create"
+    end
+
     #API builds
     #
     def add_api_support
@@ -48,6 +56,35 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       git commit: "-m 'Project initialization using Platter'"
     end
 
+    # Docker Build
+    #
+    def setup_docker_compose
+      template "docker-compose.yml.erb", "docker-compose.yml"
+      create_file "dev.env"
+    end
+
+    def provide_dev_entrypoint
+      template "dev-entrypoint.sh", "dev-entrypoint"
+      run "chmod a+x dev-entrypoint"
+    end
+
+    def provide_db_script
+      template "check_or_setup_db.erb", "bin/check_or_setup_db"
+      run "chmod a+x bin/check_or_setup_db"
+    end
+
+    def provide_attach_script
+      template "attach.erb", "bin/attach"
+      run "chmod a+x bin/attach"
+    end
+
+    def provide_restoredb_script
+      empty_directory "db/dumps"
+      create_file "db/dumps/.keep"
+      template "restoredb.erb", "bin/restoredb"
+      run "chmod a+x bin/restoredb"
+    end
+
     #Server build
     #
     def setup_server
@@ -56,11 +93,6 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
 
     # Development builds
     #
-    def provide_development_setup_bin
-      template "bin_development_setup.rb", "bin/setup", port: PORT, force: true
-      run "chmod a+x bin/setup"
-    end
-
     def setup_development_mail_delivery_strategy
       inject_into_file "config/environments/development.rb",
         %Q{
@@ -93,7 +125,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       g.javascripts false
       g.helper false
     end
-    
+
     config.autoload_paths += %W(#{config.root}/lib)
         },
           after: "config.active_record.raise_in_transactional_callbacks = true"
@@ -102,7 +134,7 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
     #TEST builds
     #
     def init_rspec
-      generate "rspec:install"
+      run "docker-compose run --rm web rspec:install"
     end
 
     def add_support_rspec_files
@@ -118,29 +150,12 @@ gem "active_model_serializers", github: "rails-api/active_model_serializers", br
       template "production_env.erb", "config/environments/staging.rb"
     end
 
-    #ACTIVE JOB builds
-    #
-    def init_delayed_job
-      generate "delayed_job:active_record"
-      run `bundle exec rake db:create db:migrate`
-    end
-
-    def add_delayed_job_active_job_configuration
-      inject_into_file 'config/application.rb',
-        %q{
-
-    # ActiveJob Configuration
-    config.active_job.queue_adapter = :delayed_job
-        },
-          after: "config.active_record.raise_in_transactional_callbacks = true"
-    end
-
     #MAILER builds
     #
     def init_sendgrid_initialize_file
       template "mailer_initializer_config.erb", "config/initializers/mailer_setup.rb"
     end
-    
+
 
     def add_exception_notification_mailer_configuration
       %w{ production staging }.each do |env|

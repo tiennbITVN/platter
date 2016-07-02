@@ -3,7 +3,7 @@ require 'rails/generators/rails/app/app_generator'
 
 module Platter
   class AppGenerator < Rails::Generators::AppGenerator
-    
+
     def initialize(*args)
       super
       if @options["api"]
@@ -27,9 +27,6 @@ module Platter
     class_option :api, type: :boolean, default: false,
       desc: "Adds API support gems"
 
-    class_option :skip_bundle, type: :boolean, aliases: "-B", default: true,
-      desc: "Don't run bundle install"
-
     def finish_template
       invoke :platter
       super
@@ -38,19 +35,27 @@ module Platter
     def platter
       invoke :custom_gemfile
       invoke :setup_development_environment
-      invoke :setup_test_environment
       invoke :setup_staging_environment
-      invoke :add_active_job_configuration
       invoke :add_api_support
       invoke :setup_mailer
       invoke :setup_server
+      invoke :setup_docker
+      invoke :setup_gems
+      invoke :setup_db
+      invoke :setup_test_environment
       invoke :setup_git
     end
 
     def custom_gemfile
       build :replace_gemfile
+    end
 
-      bundle_command 'install'
+    def setup_gems
+      build :setup_gems
+    end
+
+    def setup_db
+      build :setup_db
     end
 
     def add_api_support
@@ -74,9 +79,17 @@ module Platter
       build :setup_server
     end
 
+    def setup_docker
+      say "Adding docker-compose.yml file"
+      build :setup_docker_compose
+      build :provide_db_script
+      build :provide_dev_entrypoint
+      build :provide_attach_script
+      build :provide_restoredb_script
+    end
+
     def setup_development_environment
       say "Setting up the development environment"
-      build :provide_development_setup_bin
       build :setup_development_mail_delivery_strategy
       build :fix_i18n_deprecation_warning
       build :provide_generators_configuration
@@ -91,12 +104,6 @@ module Platter
     def setup_staging_environment
       say "Setting up the staging environment"
       build :copy_production_env_to_staging
-    end
-
-    def add_active_job_configuration
-      say "Setting up ActiveJob with DelayedJob"
-      build :init_delayed_job
-      build :add_delayed_job_active_job_configuration
     end
 
     def setup_mailer
